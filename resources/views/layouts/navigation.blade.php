@@ -22,12 +22,12 @@
         </div>
 
         <div class="hidden items-center gap-3 md:flex">
-            <a href="{{ route('profile.show', Auth::user()) }}" target="_blank" rel="noopener" class="nb-btn nb-btn-cyan nb-btn-sm">
+            <!-- <a href="{{ route('profile.show', Auth::user()) }}" target="_blank" rel="noopener" class="nb-btn nb-btn-cyan nb-btn-sm">
                 {{ __('Lihat Halaman') }}
                 <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                     <path d="M7 17 17 7M9 7h8v8" />
                 </svg>
-            </a>
+            </a> -->
 
             <x-dropdown align="right" width="48">
                 <x-slot name="trigger">
@@ -111,9 +111,9 @@
                 </div>
             </div>
 
-            <a href="{{ route('profile.show', Auth::user()) }}" target="_blank" rel="noopener" class="nb-btn nb-btn-cyan mb-2 w-full">
+            <!-- <a href="{{ route('profile.show', Auth::user()) }}" target="_blank" rel="noopener" class="nb-btn nb-btn-cyan mb-2 w-full">
                 {{ __('Lihat Halaman Publik') }}
-            </a>
+            </a> -->
 
             <form method="POST" action="{{ route('logout') }}">
                 @csrf

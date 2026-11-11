@@ -16,7 +16,7 @@
                 <section class="nb-card overflow-hidden">
                     <div class="border-b-4 border-ink bg-pop-purple px-5 py-6 text-center sm:px-8">
                         @if ($user->photo_profile)
-                            <img src="{{ $user->photo_profile }}" alt="{{ $user->name }}" class="mx-auto h-28 w-28 border-4 border-ink object-cover shadow-nb-sm">
+                            <img src="{{ $user->photo_profile }}" alt="{{ $user->name }}" class="mx-auto h-28 w-28 border-4 border-ink object-cover rounded-full">
                         @else
                             <span class="mx-auto grid h-28 w-28 place-items-center border-4 border-ink bg-pop-yellow font-display text-5xl shadow-nb-sm">
                                 {{ Str::upper(Str::substr($user->name, 0, 1)) }}
@@ -48,43 +48,95 @@
                     </div>
                 </section>
 
-                @forelse ($productsByCategory as $categoryName => $products)
-                    <section class="mt-8">
-                        <div class="mb-3 flex items-center gap-3">
-                            <h2 class="font-display text-lg uppercase leading-none sm:text-xl">{{ $categoryName }}</h2>
-                            <span class="nb-badge bg-pop-cyan">{{ $products->count() }} produk</span>
-                        </div>
-
-                        <div class="space-y-3">
-                            @foreach ($products as $product)
-                                <a href="{{ route('products.redirect', $product) }}" rel="nofollow sponsored noopener" class="group flex items-center gap-3 border-4 border-ink bg-white p-3 shadow-nb-sm transition hover:-translate-x-0.5 hover:-translate-y-0.5 hover:bg-cream hover:shadow-nb">
-                                    @if ($product->image)
-                                        <img src="{{ $product->image }}" alt="{{ $product->title }}" class="h-20 w-20 shrink-0 border-4 border-ink object-cover" loading="lazy">
-                                    @else
-                                        <span class="nb-grid-bg grid h-20 w-20 shrink-0 place-items-center border-4 border-ink bg-pop-cyan font-display text-2xl">
-                                            {{ Str::upper(Str::substr($product->title, 0, 1)) }}
-                                        </span>
-                                    @endif
-
-                                    <div class="min-w-0 flex-1">
-                                        <h3 class="text-sm font-bold leading-snug sm:text-base">{{ $product->title }}</h3>
-                                        <p class="mt-1 text-[11px] font-bold uppercase tracking-widest text-ink/50">{{ $product->category->name }}</p>
-                                        <span class="nb-badge mt-2 bg-pop-lime">Beli Sekarang</span>
-                                    </div>
-
-                                    <svg class="h-6 w-6 shrink-0 transition group-hover:translate-x-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                                        <path d="M5 12h14M13 6l6 6-6 6" />
-                                    </svg>
-                                </a>
-                            @endforeach
-                        </div>
-                    </section>
-                @empty
-                    <div class="mt-8 border-4 border-dashed border-ink/30 p-10 text-center">
-                        <p class="font-display text-xl uppercase">Belum ada produk</p>
-                        <p class="mt-2 text-sm font-medium text-ink/60">Halaman ini belum menambahkan produk affiliate.</p>
+                <div
+                    x-data="{
+                        search: '',
+                        allProducts: @js($productsByCategory->flatMap(fn ($products, $categoryName) => $products->map(fn ($product) => [
+                            'id' => $product->id,
+                            'title' => $product->title,
+                            'category' => $categoryName,
+                            'image' => $product->image,
+                            'url' => route('products.redirect', $product),
+                            'initial' => Str::upper(Str::substr($product->title, 0, 1)),
+                        ]))->values()),
+                        get filtered() {
+                            const q = this.search.trim().toLowerCase();
+                            if (!q) return this.allProducts;
+                            return this.allProducts.filter((p) => p.title.toLowerCase().includes(q) || p.category.toLowerCase().includes(q));
+                        },
+                        get groups() {
+                            return Object.values(this.filtered.reduce((acc, p) => {
+                                (acc[p.category] ??= { category: p.category, products: [] }).products.push(p);
+                                return acc;
+                            }, {}));
+                        },
+                        get hasProducts() {
+                            return this.allProducts.length > 0;
+                        },
+                        get hasResults() {
+                            return this.filtered.length > 0;
+                        }
+                    }"
+                    class="mt-8"
+                >
+                    <div x-show="hasProducts" class="mb-6">
+                        <label for="product-search" class="sr-only">Cari produk atau kategori</label>
+                        <input
+                            id="product-search"
+                            type="search"
+                            x-model.debounce.300ms="search"
+                            placeholder="Cari produk atau kategori..."
+                            class="nb-input w-full bg-white"
+                            autocomplete="off"
+                        >
                     </div>
-                @endforelse
+
+                    <template x-if="hasProducts && !hasResults">
+                        <div class="border-4 border-dashed border-ink/30 p-10 text-center">
+                            <p class="font-display text-xl uppercase">Tidak ditemukan</p>
+                            <p class="mt-2 text-sm font-medium text-ink/60">Tidak ada produk atau kategori yang cocok dengan pencarian.</p>
+                        </div>
+                    </template>
+
+                    <template x-for="group in groups" :key="group.category">
+                        <section class="mt-8 first:mt-0">
+                            <div class="mb-3 flex items-center gap-3">
+                                <h2 class="font-display text-lg uppercase leading-none sm:text-xl" x-text="group.category"></h2>
+                                <span class="nb-badge bg-pop-cyan" x-text="`${group.products.length} produk`"></span>
+                            </div>
+
+                            <div class="space-y-3">
+                                <template x-for="product in group.products" :key="product.id">
+                                    <a :href="product.url" rel="nofollow sponsored noopener" class="group flex items-center gap-3 border-4 border-ink bg-white p-3 shadow-nb-sm transition hover:-translate-x-0.5 hover:-translate-y-0.5 hover:bg-cream hover:shadow-nb">
+                                        <template x-if="product.image">
+                                            <img :src="product.image" :alt="product.title" class="h-20 w-20 shrink-0 border-4 border-ink object-cover" loading="lazy">
+                                        </template>
+                                        <template x-if="!product.image">
+                                            <span class="nb-grid-bg grid h-20 w-20 shrink-0 place-items-center border-4 border-ink bg-pop-cyan font-display text-2xl" x-text="product.initial"></span>
+                                        </template>
+
+                                        <div class="min-w-0 flex-1">
+                                            <h3 class="text-sm font-bold leading-snug sm:text-base" x-text="product.title"></h3>
+                                            <p class="mt-1 text-[11px] font-bold uppercase tracking-widest text-ink/50" x-text="product.category"></p>
+                                            <span class="nb-badge mt-2 bg-pop-lime">Beli Sekarang</span>
+                                        </div>
+
+                                        <svg class="h-6 w-6 shrink-0 transition group-hover:translate-x-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                            <path d="M5 12h14M13 6l6 6-6 6" />
+                                        </svg>
+                                    </a>
+                                </template>
+                            </div>
+                        </section>
+                    </template>
+
+                    <template x-if="!hasProducts">
+                        <div class="border-4 border-dashed border-ink/30 p-10 text-center">
+                            <p class="font-display text-xl uppercase">Belum ada produk</p>
+                            <p class="mt-2 text-sm font-medium text-ink/60">Halaman ini belum menambahkan produk affiliate.</p>
+                        </div>
+                    </template>
+                </div>
 
                 <footer class="mt-12 border-t-4 border-ink pt-5 text-center">
                     <p class="text-xs font-bold uppercase tracking-widest text-ink/50">

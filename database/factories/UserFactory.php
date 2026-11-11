@@ -33,7 +33,33 @@ class UserFactory extends Factory
             'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'),
             'remember_token' => Str::random(10),
+            'role' => 'user',
+            'is_banned' => false,
+            'banned_at' => null,
+            'ban_reason' => null,
         ];
+    }
+
+    /**
+     * Indicate that the user is a master administrator.
+     */
+    public function master(): static
+    {
+        return $this->state(fn (array $attributes): array => [
+            'role' => 'master',
+        ]);
+    }
+
+    /**
+     * Indicate that the user is banned.
+     */
+    public function banned(?string $reason = 'Melanggar aturan komunitas'): static
+    {
+        return $this->state(fn (array $attributes): array => [
+            'is_banned' => true,
+            'banned_at' => now(),
+            'ban_reason' => $reason,
+        ]);
     }
 
     /**

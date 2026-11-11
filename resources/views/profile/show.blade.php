@@ -12,6 +12,28 @@
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
     <body class="nb-grid-bg min-h-screen bg-paper font-sans text-ink antialiased">
+        @if (auth()->check() && auth()->user()->isMaster() && auth()->user()->id !== $user->id)
+            <div class="border-b-4 border-ink bg-pop-purple px-4 py-2.5">
+                <div class="mx-auto flex max-w-2xl flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+                    <div class="flex items-center gap-2">
+                        <span class="nb-badge bg-white">Master Admin</span>
+                        <span class="text-xs font-bold uppercase">Status: <span class="bg-ink text-pop-lime px-1.5 py-0.5">AKTIF</span></span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <a href="{{ route('admin.users.index') }}" class="nb-btn nb-btn-ghost nb-btn-sm">
+                            Panel Master
+                        </a>
+                        <form method="POST" action="{{ route('admin.users.ban', $user) }}" onsubmit="const r = prompt('Masukkan alasan ban:'); if(!r) return false; this.reason.value = r;">
+                            @csrf
+                            <input type="hidden" name="reason" value="">
+                            <button type="submit" class="nb-btn nb-btn-danger nb-btn-sm">
+                                ✕ Ban Pengguna
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        @endif
         <main class="mx-auto w-full max-w-2xl px-4 py-8 sm:py-10">
                 <section class="nb-card overflow-hidden">
                     <div class="border-b-4 border-ink bg-pop-purple px-5 py-6 text-center sm:px-8">

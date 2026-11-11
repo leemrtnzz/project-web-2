@@ -9,6 +9,12 @@ class PublicProfileController extends Controller
 {
     public function show(User $user): View
     {
+        if ($user->isBanned()) {
+            return view('profile.banned', [
+                'user' => $user,
+            ]);
+        }
+
         $products = $user->affiliateProducts()
             ->with('category')
             ->latest()

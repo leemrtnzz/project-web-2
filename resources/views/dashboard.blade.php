@@ -7,6 +7,24 @@
     </x-slot>
 
     <div class="space-y-8">
+        @if (Auth::user()->isMaster())
+            <section class="nb-card bg-pop-yellow p-5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                <div class="flex items-center gap-3">
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <h2 class="font-display text-lg uppercase leading-none">Akses Master Administrator</h2>
+                        </div>
+                        <p class="text-xs font-bold text-ink/70 mt-1">
+                            Anda memiliki otoritas penuh untuk memantau pengguna dan melakukan penangguhan (ban) akun.
+                        </p>
+                    </div>
+                </div>
+                <a href="{{ route('admin.users.index') }}" class="nb-btn nb-btn-dark shrink-0">
+                    Buka Panel Pengguna →
+                </a>
+            </section>
+        @endif
+
         <section class="nb-card bg-pop-purple p-5 sm:p-6">
             <div class="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
                 <div>

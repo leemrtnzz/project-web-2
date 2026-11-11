@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-#[Fillable(['name', 'username', 'email', 'bio', 'photo_profile', 'password'])]
+#[Fillable(['name', 'username', 'email', 'bio', 'photo_profile', 'password', 'role', 'is_banned', 'banned_at', 'ban_reason'])]
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable
 {
@@ -29,7 +29,42 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'is_banned' => 'boolean',
+            'banned_at' => 'datetime',
         ];
+    }
+
+    public function isMaster(): bool
+    {
+        return $this->role === 'master';
+    }
+
+    public function isUser(): bool
+    {
+        return $this->role === 'user';
+    }
+
+    public function isBanned(): bool
+    {
+        return (bool) $this->is_banned;
+    }
+
+    public function ban(?string $reason = null): void
+    {
+        $this->update([
+            'is_banned' => true,
+            'banned_at' => now(),
+            'ban_reason' => $reason,
+        ]);
+    }
+
+    public function unban(): void
+    {
+        $this->update([
+            'is_banned' => false,
+            'banned_at' => null,
+            'ban_reason' => null,
+        ]);
     }
 
     /**

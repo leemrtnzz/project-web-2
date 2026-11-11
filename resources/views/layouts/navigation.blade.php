@@ -18,6 +18,14 @@
                 <x-nav-link :href="route('profile.edit')" :active="request()->routeIs('profile.edit')">
                     {{ __('Profil') }}
                 </x-nav-link>
+                @if (Auth::user()->isMaster())
+                    <x-nav-link :href="route('admin.users.index')" :active="request()->routeIs('admin.users.*')">
+                        <span class="inline-flex items-center gap-1.5">
+                            {{ __('Kelola Pengguna') }}
+                            <!-- <span class="nb-badge bg-pop-purple text-[10px] px-1.5 py-0.5">Master</span> -->
+                        </span>
+                    </x-nav-link>
+                @endif
             </div>
         </div>
 
@@ -50,9 +58,22 @@
 
                 <x-slot name="content">
                     <div class="border-b-4 border-ink bg-cream px-4 py-3">
-                        <p class="truncate text-sm font-bold">{{ Auth::user()->name }}</p>
+                        <div class="flex items-center justify-between gap-1">
+                            <p class="truncate text-sm font-bold">{{ Auth::user()->name }}</p>
+                            @if (Auth::user()->isMaster())
+                                <span class="nb-badge bg-pop-purple text-[9px] px-1 py-0.5">MASTER</span>
+                            @else
+                                <span class="nb-badge bg-white text-[9px] px-1 py-0.5">USER</span>
+                            @endif
+                        </div>
                         <p class="truncate text-xs font-medium text-ink/60">{{ '@'.Auth::user()->username }}</p>
                     </div>
+
+                    @if (Auth::user()->isMaster())
+                        <x-dropdown-link :href="route('admin.users.index')">
+                            {{ __('Kelola Pengguna') }}
+                        </x-dropdown-link>
+                    @endif
 
                     <x-dropdown-link :href="route('profile.edit')">
                         {{ __('Pengaturan Profil') }}
@@ -95,6 +116,14 @@
         <x-responsive-nav-link :href="route('profile.edit')" :active="request()->routeIs('profile.edit')">
             {{ __('Profil') }}
         </x-responsive-nav-link>
+        @if (Auth::user()->isMaster())
+            <x-responsive-nav-link :href="route('admin.users.index')" :active="request()->routeIs('admin.users.*')">
+                <span class="inline-flex items-center gap-1.5">
+                    {{ __('Kelola Pengguna') }}
+                    <!-- <span class="nb-badge bg-pop-purple text-[10px] px-1.5 py-0.5">Master</span> -->
+                </span>
+            </x-responsive-nav-link>
+        @endif
 
         <div class="mt-4 border-t-4 border-ink pt-4">
             <div class="mb-3 flex items-center gap-3">

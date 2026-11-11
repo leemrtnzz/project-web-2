@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Middleware\EnsureUserIsMaster;
+use App\Http\Middleware\EnsureUserNotBanned;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -12,7 +14,11 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        //
+        $middleware->alias([
+            'master' => EnsureUserIsMaster::class,
+            'not_banned' => EnsureUserNotBanned::class,
+        ]);
+        $middleware->appendToGroup('web', EnsureUserNotBanned::class);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->shouldRenderJsonWhen(

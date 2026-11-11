@@ -72,6 +72,10 @@ class AffiliateProductController extends Controller
 
     public function redirect(AffiliateProduct $affiliateProduct): RedirectResponse
     {
+        if ($affiliateProduct->user->isBanned()) {
+            abort(403, 'Produk affiliate ini tidak dapat diakses karena akun pemilik telah ditangguhkan.');
+        }
+
         $affiliateProduct->increment('count');
 
         return redirect()->away($affiliateProduct->affiliate_url);

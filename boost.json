@@ -3,6 +3,7 @@
         "opencode"
     ],
     "cloud": false,
+    "guidelines": true,
     "skills": [
         "infer-conventions",
         "laravel-best-practices",

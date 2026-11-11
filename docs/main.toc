@@ -1,0 +1,33 @@
+\babel@toc {indonesian}{}\relax 
+\contentsline {section}{\numberline {1}Pendahuluan \& Gambaran Umum Aplikasi}{1}{section.1}%
+\contentsline {subsection}{\numberline {1.1}Latar Belakang}{1}{subsection.1.1}%
+\contentsline {subsection}{\numberline {1.2}Pengembangan Fitur Multi-Role \& Penegakan Aturan}{1}{subsection.1.2}%
+\contentsline {subsection}{\numberline {1.3}Spesifikasi Teknologi (Tech Stack)}{1}{subsection.1.3}%
+\contentsline {section}{\numberline {2}Sistem Otoritas, Peran (Roles), \& Fitur Keamanan}{3}{section.2}%
+\contentsline {subsection}{\numberline {2.1}Matriks Hak Akses (Access Control Matrix)}{3}{subsection.2.1}%
+\contentsline {subsection}{\numberline {2.2}Arsitektur Penegakan Aturan (Ban System)}{3}{subsection.2.2}%
+\contentsline {subsection}{\numberline {2.3}Konsep Visual Halaman Peringatan ``DO NOT CROSS''}{4}{subsection.2.3}%
+\contentsline {section}{\numberline {3}Pengelolaan Database \& Seeder}{5}{section.3}%
+\contentsline {subsection}{\numberline {3.1}Migrasi Database}{5}{subsection.3.1}%
+\contentsline {subsection}{\numberline {3.2}Implementasi Model User}{5}{subsection.3.2}%
+\contentsline {subsection}{\numberline {3.3}Dokumentasi Seeder (Master \& User)}{6}{subsection.3.3}%
+\contentsline {subsubsection}{\numberline {3.3.1}MasterSeeder (\texttt {database/seeders/MasterSeeder.php})}{6}{subsubsection.3.3.1}%
+\contentsline {subsubsection}{\numberline {3.3.2}UserSeeder (\texttt {database/seeders/UserSeeder.php})}{6}{subsubsection.3.3.2}%
+\contentsline {section}{\numberline {4}Dokumentasi Fitur Aplikasi \& Tangkapan Layar (Screenshots)}{7}{section.4}%
+\contentsline {subsection}{\numberline {4.1}Halaman Utama (Landing Page)}{7}{subsection.4.1}%
+\contentsline {subsection}{\numberline {4.2}Autentikasi Pengguna (Login \& Register)}{7}{subsection.4.2}%
+\contentsline {subsection}{\numberline {4.3}Dashboard Kreator / Pengguna}{9}{subsection.4.3}%
+\contentsline {subsection}{\numberline {4.4}Manajemen Produk Afiliasi}{9}{subsection.4.4}%
+\contentsline {subsection}{\numberline {4.5}Manajemen Kategori \& Pengaturan Profil}{10}{subsection.4.5}%
+\contentsline {subsection}{\numberline {4.6}Halaman Publik Profil Kreator Aktif}{10}{subsection.4.6}%
+\contentsline {subsection}{\numberline {4.7}Halaman Peringatan Pelanggaran Profil ``DO NOT CROSS''}{11}{subsection.4.7}%
+\contentsline {subsection}{\numberline {4.8}Dashboard Master Administrator}{11}{subsection.4.8}%
+\contentsline {subsection}{\numberline {4.9}Panel Kelola Pengguna Master (\texttt {/admin/users})}{13}{subsection.4.9}%
+\contentsline {subsection}{\numberline {4.10}Modal Penindakan Ban \& Aksi Otoritas}{13}{subsection.4.10}%
+\contentsline {subsection}{\numberline {4.11}Pengawasan Profil Banned oleh Master}{15}{subsection.4.11}%
+\contentsline {subsection}{\numberline {4.12}Penolakan Login Otomatis Akun Ter-ban}{15}{subsection.4.12}%
+\contentsline {section}{\numberline {5}Laporan Hasil Pengujian Sistem (Testing)}{17}{section.5}%
+\contentsline {subsection}{\numberline {5.1}Metodologi Pengujian}{17}{subsection.5.1}%
+\contentsline {subsection}{\numberline {5.2}Hasil Eksekusi Test Suite}{17}{subsection.5.2}%
+\contentsline {subsection}{\numberline {5.3}Rincian Kasus Uji (Test Cases)}{17}{subsection.5.3}%
+\contentsline {section}{\numberline {6}Kesimpulan}{20}{section.6}%

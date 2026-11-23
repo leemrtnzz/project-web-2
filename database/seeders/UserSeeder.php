@@ -13,7 +13,6 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        // 1. Demo Creator (Active user with several categories & products)
         $demoUser = User::updateOrCreate(
             ['email' => 'demo@example.com'],
             [
@@ -58,7 +57,6 @@ class UserSeeder extends Seeder
             );
         });
 
-        // 2. Regular Creator (Active user: Budi)
         $budiUser = User::updateOrCreate(
             ['email' => 'budi@example.com'],
             [
@@ -87,7 +85,6 @@ class UserSeeder extends Seeder
             ]
         );
 
-        // 3. Banned User (Violating user to showcase DO NOT CROSS banner)
         $bannedUser = User::updateOrCreate(
             ['email' => 'violator@example.com'],
             [
